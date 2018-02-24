@@ -1,0 +1,537 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 283,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [],
+   "source": [
+    "from scipy import linalg\n",
+    "from matplotlib import pylab as plt\n",
+    "import numpy as np\n",
+    "% matplotlib inline "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 284,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "from scipy import optimize\n",
+    "from scipy.optimize import minimize"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Part 1"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Рассмотрим сложную математическую функцию на отрезке [1, 30]:\n",
+    "\n",
+    "f(x) = sin(x / 5) * exp(x / 10) + 5 * exp(-x / 2)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "collapsed": true
+   },
+   "source": [
+    "2. В первом задании будем искать минимум этой функции на заданном промежутке с помощью scipy.optimize. \n",
+    "\n",
+    "4. Изучите примеры использования scipy.optimize.minimize в документации Scipy (см. \"Материалы\")\n",
+    "5. Попробуйте найти минимум, используя стандартные параметры в функции scipy.optimize.minimize (т.е. задав только функцию и начальное приближение). Попробуйте менять начальное приближение и изучить, меняется ли результат.\n",
+    "Укажите в scipy.optimize.minimize в качестве метода BFGS (один из самых точных в большинстве случаев градиентных методов оптимизации), запустите из начального приближения x=2. Градиент функции при этом указывать не нужно – он будет оценен численно. Полученное значение функции в точке минимума - ваш первый ответ по заданию 1, его надо записать с точностью до 2 знака после запятой.\n",
+    "Теперь измените начальное приближение на x=30. Значение функции в точке минимума - ваш второй ответ по заданию 1, его надо записать через пробел после первого, с точностью до 2 знака после запятой.\n",
+    "Стоит обдумать полученный результат. Почему ответ отличается в зависимости от начального приближения? Если нарисовать график функции (например, как это делалось в видео, где мы знакомились с Numpy, Scipy и Matplotlib), можно увидеть, в какие именно минимумы мы попали. В самом деле, градиентные методы обычно не решают задачу глобальной оптимизации, поэтому результаты работы ожидаемые и вполне корректные."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 285,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "from math import sin,exp"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 286,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [],
+   "source": [
+    "from math import sin,exp\n",
+    "def f(x): \n",
+    "    return np.sin(x[0]/5)*np.exp(x[0] / 10) + 5* np.exp(-x[0] / 2)  \n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 287,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "f([1]) 3.25221686527\n"
+     ]
+    }
+   ],
+   "source": [
+    "print ('f([1])',f([1]))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 288,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [],
+   "source": [
+    "def h(x):\n",
+    "    return int(np.sin(x[0]/5)*np.exp(x[0] / 10) + 5* np.exp(-x[0] / 2))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 289,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "h([1]) 3\n"
+     ]
+    }
+   ],
+   "source": [
+    "print ('h([1])',h([1]))\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 290,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "      fun: 1.7452682903321932\n",
+      " hess_inv: array([[ 6.01546361,  0.        ],\n",
+      "       [ 0.        ,  1.        ]])\n",
+      "      jac: array([ -2.68220901e-07,   0.00000000e+00])\n",
+      "  message: 'Optimization terminated successfully.'\n",
+      "     nfev: 32\n",
+      "      nit: 7\n",
+      "     njev: 8\n",
+      "   status: 0\n",
+      "  success: True\n",
+      "        x: array([  4.13628706,  30.        ])\n"
+     ]
+    }
+   ],
+   "source": [
+    "x_min=optimize.minimize(f,[1,30])\n",
+    "print(x_min)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 291,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "      fun: 1.745268290344928\n",
+      " hess_inv: array([[ 5.98750711]])\n",
+      "      jac: array([ -2.05636024e-06])\n",
+      "  message: 'Optimization terminated successfully.'\n",
+      "     nfev: 21\n",
+      "      nit: 6\n",
+      "     njev: 7\n",
+      "   status: 0\n",
+      "  success: True\n",
+      "        x: array([ 4.13627619])\n"
+     ]
+    }
+   ],
+   "source": [
+    "x_min_BFGS_2=optimize.minimize(f,2.0,method='BFGS' )\n",
+    "print(x_min_BFGS_2)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 292,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "      fun: -11.898894665981322\n",
+      " hess_inv: array([[ 1.67940841]])\n",
+      "      jac: array([ 0.])\n",
+      "  message: 'Optimization terminated successfully.'\n",
+      "     nfev: 21\n",
+      "      nit: 6\n",
+      "     njev: 7\n",
+      "   status: 0\n",
+      "  success: True\n",
+      "        x: array([ 25.880193])\n"
+     ]
+    }
+   ],
+   "source": [
+    "x_min_BFGS_30=optimize.minimize(f,30.0,method='BFGS' )\n",
+    "print(x_min_BFGS_30)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 293,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "%matplotlib inline\n",
+    "import matplotlib.pyplot as plt"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 294,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\n",
+      "text/plain": [
+       "<matplotlib.figure.Figure at 0x10f31a828>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "x = np.arange(1.,30.,0.1)\n",
+    "f = np.sin(x/5)*np.exp(x/10)+ 5* np.exp(-x / 2) #важно здесь использовать np.exp, а не math.exp как некоторые\n",
+    "\n",
+    "plt.plot(x, f, color=\"red\",  linewidth=2.5, linestyle=\"-\", label=\"f(x)\")\n",
+    "#plt.plot(x, h, color=\"green\",  linewidth=2.5, linestyle=\"-\", label=\"h(x)\")\n",
+    "plt.title('Graphs of function f(x)' )\n",
+    "plt.xlim(0.0, 30.0)\n",
+    "\n",
+    "plt.ylim(-15.0,10,1)\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Ответ 1.74 -11.89 \n",
+    "У функции f(x) на отрезке [1, 30] есть два минимума. Взяв начальное приближение x=2 мы попадаем в первый, а начав с точки x=30 – во вт"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Part 2"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "1. Теперь попробуем применить к той же функции f(x) метод глобальной оптимизации — дифференциальную эволюцию.\n",
+    "2. Изучите документацию и примеры использования функции scipy.optimize.differential_evolution.\n",
+    "3. Обратите внимание, что границы значений аргументов функции представляют собой список кортежей (list, в который помещены объекты типа tuple). Даже если у вас функция одного аргумента, возьмите границы его значений в квадратные скобки, чтобы передавать в этом параметре список из одного кортежа, т.к. в реализации scipy.optimize.differential_evolution длина этого списка используется чтобы определить количество аргументов функции.\n",
+    "4. Запустите поиск минимума функции f(x) с помощью дифференциальной эволюции на промежутке [1, 30]. Полученное значение функции в точке минимума - ответ в задаче 2. Запишите его с точностью до второго знака после запятой. В этой задаче ответ - только одно число.\n",
+    "\n",
+    "Заметьте, дифференциальная эволюция справилась с задачей поиска глобального минимума на отрезке, т.к. по своему устройству она предполагает борьбу с попаданием в локальные минимумы.\n",
+    "Сравните количество итераций, потребовавшихся BFGS для нахождения минимума при хорошем начальном приближении, с количеством итераций, потребовавшихся дифференциальной эволюции. При повторных запусках дифференциальной эволюции количество итераций будет меняться, но в этом примере, скорее всего, оно всегда будет сравнимым с количеством итераций BFGS. Однако в дифференциальной эволюции за одну итерацию требуется выполнить гораздо больше действий, чем в BFGS. Например, можно обратить внимание на количество вычислений значения функции (nfev) и увидеть, что у BFGS оно значительно меньше. Кроме того, время работы дифференциальной эволюции очень быстро растет с увеличением числа аргументов функции.\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 295,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "from scipy.optimize import  differential_evolution\n",
+    "import numpy as np"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 298,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "ename": "TypeError",
+     "evalue": "'numpy.ndarray' object is not callable",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[0;31mTypeError\u001b[0m                                 Traceback (most recent call last)",
+      "\u001b[0;32m<ipython-input-298-26e00345e928>\u001b[0m in \u001b[0;36m<module>\u001b[0;34m()\u001b[0m\n\u001b[0;32m----> 1\u001b[0;31m \u001b[0mx_min_dif_evol_f\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0moptimize\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mdifferential_evolution\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mf\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;36m1\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;36m30\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m      2\u001b[0m \u001b[0mprint\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mx_min_dif_evol_f\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m//anaconda/lib/python3.5/site-packages/scipy/optimize/_differentialevolution.py\u001b[0m in \u001b[0;36mdifferential_evolution\u001b[0;34m(func, bounds, args, strategy, maxiter, popsize, tol, mutation, recombination, seed, callback, disp, polish, init)\u001b[0m\n\u001b[1;32m    204\u001b[0m                                          \u001b[0mdisp\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mdisp\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    205\u001b[0m                                          init=init)\n\u001b[0;32m--> 206\u001b[0;31m     \u001b[0;32mreturn\u001b[0m \u001b[0msolver\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0msolve\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    207\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    208\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m//anaconda/lib/python3.5/site-packages/scipy/optimize/_differentialevolution.py\u001b[0m in \u001b[0;36msolve\u001b[0;34m(self)\u001b[0m\n\u001b[1;32m    495\u001b[0m         \u001b[0;31m# initial energies to be calculated (the following loop isn't run).\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    496\u001b[0m         \u001b[0;32mif\u001b[0m \u001b[0mnp\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mall\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mnp\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0misinf\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mpopulation_energies\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 497\u001b[0;31m             \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_calculate_population_energies\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    498\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    499\u001b[0m         \u001b[0;31m# do the optimisation.\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m//anaconda/lib/python3.5/site-packages/scipy/optimize/_differentialevolution.py\u001b[0m in \u001b[0;36m_calculate_population_energies\u001b[0;34m(self)\u001b[0m\n\u001b[1;32m    572\u001b[0m             \u001b[0mparameters\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_scale_parameters\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mcandidate\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    573\u001b[0m             self.population_energies[index] = self.func(parameters,\n\u001b[0;32m--> 574\u001b[0;31m                                                         *self.args)\n\u001b[0m\u001b[1;32m    575\u001b[0m             \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_nfev\u001b[0m \u001b[0;34m+=\u001b[0m \u001b[0;36m1\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    576\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;31mTypeError\u001b[0m: 'numpy.ndarray' object is not callable"
+     ]
+    }
+   ],
+   "source": [
+    "x_min_dif_evol_f=optimize.differential_evolution(f,[(1,30)])\n",
+    "print(x_min_dif_evol_f)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "\"\"\"Finds the global minimum of a multivariate function.\n",
+    "    Differential Evolution is stochastic in nature (does not use gradient\n",
+    "    methods) to find the minimium, and can search large areas of candidate\n",
+    "    space, but often requires larger numbers of function evaluations than\n",
+    "    conventional gradient based techniques."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Part 3"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Задача 3. Минимизация негладкой функции\n",
+    "\n",
+    "Теперь рассмотрим функцию h(x) = int(f(x)) на том же отрезке [1, 30], т.е. теперь каждое значение f(x) приводится к типу int и функция принимает только целые значения.\n",
+    "Такая функция будет негладкой и даже разрывной, а ее график будет иметь ступенчатый вид. Убедитесь в этом, построив график h(x) с помощью matplotlib.\n",
+    "Попробуйте найти минимум функции h(x) с помощью BFGS, взяв в качестве начального приближения x=30. Получившееся значение функции – ваш первый ответ в этой задаче.\n",
+    "Теперь попробуйте найти минимум h(x) на отрезке [1, 30] с помощью дифференциальной эволюции. Значение функции h(x) в точке минимума – это ваш второй ответ в этом задании. Запишите его через пробел после предыдущего.\n",
+    "Обратите внимание на то, что полученные ответы различаются. Это ожидаемый результат, ведь BFGS использует градиент (в одномерном случае – производную) и явно не пригоден для минимизации рассмотренной нами разрывной функции. Попробуйте понять, почему минимум, найденный BFGS, именно такой (возможно в этом вам поможет выбор разных начальных приближений).\n",
+    "Выполнив это задание, вы увидели на практике, чем поиск минимума функции отличается от глобальной оптимизации, и когда может быть полезно применить вместо градиентного метода оптимизации метод, не использующий градиент. Кроме того, вы попрактиковались в использовании библиотеки SciPy для решения оптимизационных задач, и теперь знаете, насколько это просто и удобно."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 299,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "ename": "ValueError",
+     "evalue": "x and y must have same first dimension",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[0;31mValueError\u001b[0m                                Traceback (most recent call last)",
+      "\u001b[0;32m<ipython-input-299-44f4d9d251d7>\u001b[0m in \u001b[0;36m<module>\u001b[0;34m()\u001b[0m\n\u001b[1;32m      3\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      4\u001b[0m \u001b[0mplt\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mplot\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mx\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mf\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mcolor\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;34m\"red\"\u001b[0m\u001b[0;34m,\u001b[0m  \u001b[0mlinewidth\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;36m2.5\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mlinestyle\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;34m\"-\"\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mlabel\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;34m\"h(x)\"\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m----> 5\u001b[0;31m \u001b[0mplt\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mplot\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mx\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mh\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mcolor\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;34m\"green\"\u001b[0m\u001b[0;34m,\u001b[0m  \u001b[0mlinewidth\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;36m2.5\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mlinestyle\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;34m\"-\"\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mlabel\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;34m\"h(x)\"\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m      6\u001b[0m \u001b[0mplt\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mtitle\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m'Graphs of function f(x)'\u001b[0m \u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      7\u001b[0m \u001b[0mplt\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mxlim\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;36m0.0\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;36m30.0\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m//anaconda/lib/python3.5/site-packages/matplotlib/pyplot.py\u001b[0m in \u001b[0;36mplot\u001b[0;34m(*args, **kwargs)\u001b[0m\n\u001b[1;32m   3159\u001b[0m         \u001b[0max\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mhold\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mhold\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   3160\u001b[0m     \u001b[0;32mtry\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m-> 3161\u001b[0;31m         \u001b[0mret\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0max\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mplot\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m*\u001b[0m\u001b[0margs\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m**\u001b[0m\u001b[0mkwargs\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m   3162\u001b[0m     \u001b[0;32mfinally\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   3163\u001b[0m         \u001b[0max\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mhold\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mwashold\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m//anaconda/lib/python3.5/site-packages/matplotlib/__init__.py\u001b[0m in \u001b[0;36minner\u001b[0;34m(ax, *args, **kwargs)\u001b[0m\n\u001b[1;32m   1817\u001b[0m                     warnings.warn(msg % (label_namer, func.__name__),\n\u001b[1;32m   1818\u001b[0m                                   RuntimeWarning, stacklevel=2)\n\u001b[0;32m-> 1819\u001b[0;31m             \u001b[0;32mreturn\u001b[0m \u001b[0mfunc\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0max\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m*\u001b[0m\u001b[0margs\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m**\u001b[0m\u001b[0mkwargs\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m   1820\u001b[0m         \u001b[0mpre_doc\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0minner\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m__doc__\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   1821\u001b[0m         \u001b[0;32mif\u001b[0m \u001b[0mpre_doc\u001b[0m \u001b[0;32mis\u001b[0m \u001b[0;32mNone\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m//anaconda/lib/python3.5/site-packages/matplotlib/axes/_axes.py\u001b[0m in \u001b[0;36mplot\u001b[0;34m(self, *args, **kwargs)\u001b[0m\n\u001b[1;32m   1380\u001b[0m         \u001b[0mkwargs\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mcbook\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mnormalize_kwargs\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mkwargs\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0m_alias_map\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   1381\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m-> 1382\u001b[0;31m         \u001b[0;32mfor\u001b[0m \u001b[0mline\u001b[0m \u001b[0;32min\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_get_lines\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m*\u001b[0m\u001b[0margs\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m**\u001b[0m\u001b[0mkwargs\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m   1383\u001b[0m             \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0madd_line\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mline\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   1384\u001b[0m             \u001b[0mlines\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mappend\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mline\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m//anaconda/lib/python3.5/site-packages/matplotlib/axes/_base.py\u001b[0m in \u001b[0;36m_grab_next_args\u001b[0;34m(self, *args, **kwargs)\u001b[0m\n\u001b[1;32m    379\u001b[0m                 \u001b[0;32mreturn\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    380\u001b[0m             \u001b[0;32mif\u001b[0m \u001b[0mlen\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mremaining\u001b[0m\u001b[0;34m)\u001b[0m \u001b[0;34m<=\u001b[0m \u001b[0;36m3\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 381\u001b[0;31m                 \u001b[0;32mfor\u001b[0m \u001b[0mseg\u001b[0m \u001b[0;32min\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_plot_args\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mremaining\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mkwargs\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    382\u001b[0m                     \u001b[0;32myield\u001b[0m \u001b[0mseg\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    383\u001b[0m                 \u001b[0;32mreturn\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m//anaconda/lib/python3.5/site-packages/matplotlib/axes/_base.py\u001b[0m in \u001b[0;36m_plot_args\u001b[0;34m(self, tup, kwargs)\u001b[0m\n\u001b[1;32m    357\u001b[0m             \u001b[0mx\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0my\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mindex_of\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mtup\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;34m-\u001b[0m\u001b[0;36m1\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    358\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 359\u001b[0;31m         \u001b[0mx\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0my\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_xy_from_xy\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mx\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0my\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    360\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    361\u001b[0m         \u001b[0;32mif\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mcommand\u001b[0m \u001b[0;34m==\u001b[0m \u001b[0;34m'plot'\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m//anaconda/lib/python3.5/site-packages/matplotlib/axes/_base.py\u001b[0m in \u001b[0;36m_xy_from_xy\u001b[0;34m(self, x, y)\u001b[0m\n\u001b[1;32m    217\u001b[0m         \u001b[0my\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0m_check_1d\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0my\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    218\u001b[0m         \u001b[0;32mif\u001b[0m \u001b[0mx\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mshape\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;36m0\u001b[0m\u001b[0;34m]\u001b[0m \u001b[0;34m!=\u001b[0m \u001b[0my\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mshape\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;36m0\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 219\u001b[0;31m             \u001b[0;32mraise\u001b[0m \u001b[0mValueError\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m\"x and y must have same first dimension\"\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    220\u001b[0m         \u001b[0;32mif\u001b[0m \u001b[0mx\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mndim\u001b[0m \u001b[0;34m>\u001b[0m \u001b[0;36m2\u001b[0m \u001b[0;32mor\u001b[0m \u001b[0my\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mndim\u001b[0m \u001b[0;34m>\u001b[0m \u001b[0;36m2\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    221\u001b[0m             \u001b[0;32mraise\u001b[0m \u001b[0mValueError\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m\"x and y can be no greater than 2-D\"\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;31mValueError\u001b[0m: x and y must have same first dimension"
+     ]
+    },
+    {
+     "data": {
+      "image/png": "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\n",
+      "text/plain": [
+       "<matplotlib.figure.Figure at 0x10eb953c8>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "x = np.arange(1.,30.,0.1)\n",
+    " #важно здесь использовать np.exp, а не math.exp как некоторые\n",
+    "\n",
+    "plt.plot(x, f, color=\"red\",  linewidth=2.5, linestyle=\"-\", label=\"h(x)\")\n",
+    "plt.plot(x, h, color=\"green\",  linewidth=2.5, linestyle=\"-\", label=\"h(x)\")\n",
+    "plt.title('Graphs of function f(x)' )\n",
+    "plt.xlim(0.0, 30.0)\n",
+    "\n",
+    "plt.ylim(-15.0,10,1)\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 300,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "h([1]) 3\n",
+      "h([15]) 0\n"
+     ]
+    }
+   ],
+   "source": [
+    "print ('h([1])',h([1]))\n",
+    "print ('h([15])',h([15]))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 301,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "      fun: -5\n",
+      " hess_inv: array([[1]])\n",
+      "      jac: array([ 0.])\n",
+      "  message: 'Optimization terminated successfully.'\n",
+      "     nfev: 3\n",
+      "      nit: 0\n",
+      "     njev: 1\n",
+      "   status: 0\n",
+      "  success: True\n",
+      "        x: array([ 30.])\n"
+     ]
+    }
+   ],
+   "source": [
+    "x_min_BFGS_30_h=optimize.minimize(h,30.0,method='BFGS' )#найти минимум функции h(x) с помощью BFGS, взяв в качестве начального приближения x=30. Получившееся значение функции – ваш первый ответ в этой задаче.\n",
+    "print(x_min_BFGS_30_h)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 302,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "     fun: -11.0\n",
+      " message: 'Optimization terminated successfully.'\n",
+      "    nfev: 92\n",
+      "     nit: 5\n",
+      " success: True\n",
+      "       x: array([ 25.67237855])\n"
+     ]
+    }
+   ],
+   "source": [
+    "x_min_h_dif_evol=optimize.differential_evolution(h,[(1,30)])\n",
+    "print(x_min_h_dif_evol)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "anaconda-cloud": {},
+  "kernelspec": {
+   "display_name": "Python [Root]",
+   "language": "python",
+   "name": "Python [Root]"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.5.2"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 0
+}

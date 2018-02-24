@@ -1,0 +1,804 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 111,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "import re"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 112,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [],
+   "source": [
+    "f=open('sentences.txt','r')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 113,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "22\n"
+     ]
+    }
+   ],
+   "source": [
+    "number_sentences = sum(1 for line in open('sentences.txt'))\n",
+    "print(number_sentences)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "1Скачайте файл с предложениями (sentences.txt).\n",
+    "2 Каждая строка в файле соответствует одному предложению. Считайте их, приведите каждую к нижнему регистру с помощью строковой функции lower()."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 114,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [],
+   "source": [
+    "text = f.read().lower() "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 115,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [],
+   "source": [
+    "f.close()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "3Произведите токенизацию, то есть разбиение текстов на слова. Для этого можно воспользоваться регулярным выражением, которое считает разделителем любой символ, не являющийся буквой: re.split('[^a-z]', t). Не забудьте удалить пустые слова после разделения."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 116,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [],
+   "source": [
+    "text = re.split('[^a-z]', text)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 117,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [],
+   "source": [
+    "text = list(filter(None, text))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 118,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [],
+   "source": [
+    "lines = open('sentences.txt').read().lower().splitlines()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 119,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "import string\n",
+    "punct = set(string.punctuation) # работающий алгоритм для строк"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 109,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "stroka= 0 words_in_line ['in', 'comparison', 'to', 'dogs', 'cats', 'have', 'not', 'undergone', 'major', 'changes', 'during', 'the', 'domestication', 'process']\n",
+      "stroka= 1 words_in_line ['as', 'cat', 'simply', 'catenates', 'streams', 'of', 'bytes', 'it', 'can', 'be', 'also', 'used', 'to', 'concatenate', 'binary', 'files', 'where', 'it', 'will', 'just', 'concatenate', 'sequence', 'of', 'bytes']\n",
+      "stroka= 2 words_in_line ['a', 'common', 'interactive', 'use', 'of', 'cat', 'for', 'a', 'single', 'file', 'is', 'to', 'output', 'the', 'content', 'of', 'a', 'file', 'to', 'standard', 'output']\n",
+      "stroka= 3 words_in_line ['cats', 'can', 'hear', 'sounds', 'too', 'faint', 'or', 'too', 'high', 'in', 'frequency', 'for', 'human', 'ears', 'such', 'as', 'those', 'made', 'by', 'mice', 'and', 'other', 'small', 'animals']\n",
+      "stroka= 4 words_in_line ['in', 'one', 'people', 'deliberately', 'tamed', 'cats', 'in', 'a', 'process', 'of', 'artificial', 'selection', 'as', 'they', 'were', 'useful', 'predators', 'of', 'vermin']\n",
+      "stroka= 5 words_in_line ['the', 'domesticated', 'cat', 'and', 'its', 'closest', 'wild', 'ancestor', 'are', 'both', 'diploid', 'organisms', 'that', 'possess', '38', 'chromosomes', 'and', 'roughly', '20000', 'genes']\n",
+      "stroka= 6 words_in_line ['domestic', 'cats', 'are', 'similar', 'in', 'size', 'to', 'the', 'other', 'members', 'of', 'the', 'genus', 'felis', 'typically', 'weighing', 'between', '4', 'and', '5', 'kg', '88', 'and', '110', 'lb']\n",
+      "stroka= 7 words_in_line ['however', 'if', 'the', 'output', 'is', 'piped', 'or', 'redirected', 'cat', 'is', 'unnecessary']\n",
+      "stroka= 8 words_in_line ['cat', 'with', 'one', 'named', 'file', 'is', 'safer', 'where', 'human', 'error', 'is', 'a', 'concern', 'one', 'wrong', 'use', 'of', 'the', 'default', 'redirection', 'symbol', 'instead', 'of', 'often', 'adjacent', 'on', 'keyboards', 'may', 'permanently', 'delete', 'the', 'file', 'you', 'were', 'just', 'needing', 'to', 'read']\n",
+      "stroka= 9 words_in_line ['in', 'terms', 'of', 'legibility', 'a', 'sequence', 'of', 'commands', 'starting', 'with', 'cat', 'and', 'connected', 'by', 'pipes', 'has', 'a', 'clear', 'lefttoright', 'flow', 'of', 'information']\n",
+      "stroka= 10 words_in_line ['cat', 'command', 'is', 'one', 'of', 'the', 'basic', 'commands', 'that', 'you', 'learned', 'when', 'you', 'started', 'in', 'the', 'unix', 'linux', 'world']\n",
+      "stroka= 11 words_in_line ['using', 'cat', 'command', 'the', 'lines', 'received', 'from', 'stdin', 'can', 'be', 'redirected', 'to', 'a', 'new', 'file', 'using', 'redirection', 'symbols']\n",
+      "stroka= 12 words_in_line ['when', 'you', 'type', 'simply', 'cat', 'command', 'without', 'any', 'arguments', 'it', 'just', 'receives', 'the', 'stdin', 'content', 'and', 'displays', 'it', 'in', 'the', 'stdout']\n",
+      "stroka= 13 words_in_line ['leopard', 'was', 'released', 'on', 'october', '26', '2007', 'as', 'the', 'successor', 'of', 'tiger', 'version', '104', 'and', 'is', 'available', 'in', 'two', 'editions']\n",
+      "stroka= 14 words_in_line ['according', 'to', 'apple', 'leopard', 'contains', 'over', '300', 'changes', 'and', 'enhancements', 'over', 'its', 'predecessor', 'mac', 'os', 'x', 'tiger']\n",
+      "stroka= 15 words_in_line ['as', 'of', 'mid', '2010', 'some', 'apple', 'computers', 'have', 'firmware', 'factory', 'installed', 'which', 'will', 'no', 'longer', 'allow', 'installation', 'of', 'mac', 'os', 'x', 'leopard']\n",
+      "stroka= 16 words_in_line ['since', 'apple', 'moved', 'to', 'using', 'intel', 'processors', 'in', 'their', 'computers', 'the', 'osx86', 'community', 'has', 'developed', 'and', 'now', 'also', 'allows', 'mac', 'os', 'x', 'tiger', 'and', 'later', 'releases', 'to', 'be', 'installed', 'on', 'nonapple', 'x86based', 'computers']\n",
+      "stroka= 17 words_in_line ['os', 'x', 'mountain', 'lion', 'was', 'released', 'on', 'july', '25', '2012', 'for', 'purchase', 'and', 'download', 'through', 'apples', 'mac', 'app', 'store', 'as', 'part', 'of', 'a', 'switch', 'to', 'releasing', 'os', 'x', 'versions', 'online', 'and', 'every', 'year']\n",
+      "stroka= 18 words_in_line ['apple', 'has', 'released', 'a', 'small', 'patch', 'for', 'the', 'three', 'most', 'recent', 'versions', 'of', 'safari', 'running', 'on', 'os', 'x', 'yosemite', 'mavericks', 'and', 'mountain', 'lion']\n",
+      "stroka= 19 words_in_line ['the', 'mountain', 'lion', 'release', 'marks', 'the', 'second', 'time', 'apple', 'has', 'offered', 'an', 'incremental', 'upgrade', 'rather', 'than', 'releasing', 'a', 'new', 'cat', 'entirely']\n",
+      "stroka= 20 words_in_line ['mac', 'os', 'x', 'mountain', 'lion', 'installs', 'in', 'place', 'so', 'you', 'wont', 'need', 'to', 'create', 'a', 'separate', 'disk', 'or', 'run', 'the', 'installation', 'off', 'an', 'external', 'drive']\n",
+      "stroka= 21 words_in_line ['the', 'fifth', 'major', 'update', 'to', 'mac', 'os', 'x', 'leopard', 'contains', 'such', 'a', 'mountain', 'of', 'features', 'more', 'than', '300', 'by', 'apples', 'count']\n"
+     ]
+    }
+   ],
+   "source": [
+    "i=0 #iterate by lines\n",
+    "j=0\n",
+    "for i in range(number_sentences):\n",
+    "     lines[i]=''.join(x for x in lines[i] if x not in punct)\n",
+    "     words_in_line=lines[i].split()\n",
+    "   \n",
+    "     print('stroka=',i,'words_in_line',words_in_line)\n",
+    "     line_array=np.array(words_in_line)\n",
+    "     for j in range (254):\n",
+    "        matrix[i,j]=(line_array == voc[j]).sum() \n",
+    "       \n",
+    "        unique_word_count\n",
+    "     \n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "5Создайте матрицу размера n * d, где n — число предложений. Заполните ее: элемент с индексом (i, j) в этой матрице должен быть равен количеству вхождений j-го слова в i-е предложение. У вас должна получиться матрица размера 22 * 254."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [],
+   "source": [
+    "#len(text)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [],
+   "source": [
+    "#type(text)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 122,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "voc=[]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 123,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "254\n"
+     ]
+    }
+   ],
+   "source": [
+    "index = 0\n",
+    "for text[index] in text:\n",
+    "    if text[index] not in voc: \n",
+    "         voc.append(text[index])\n",
+    "         index += 1\n",
+    "unique_word_count = index\n",
+    "print (unique_word_count)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 124,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "second element of voc: to\n"
+     ]
+    }
+   ],
+   "source": [
+    "#print(voc)\n",
+    "print('second element of voc:',voc[2])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 21,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [],
+   "source": [
+    "import numpy as np"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 125,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "(22, 254)"
+      ]
+     },
+     "execution_count": 125,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "matrix=np.zeros((number_sentences,unique_word_count))\n",
+    "matrix.shape"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 442,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [],
+   "source": [
+    "#print(matrix)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 126,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [],
+   "source": [
+    "#lines = open('sentences.txt').read().lower().splitlines() # list with lines of text as element , \n",
+    "#попробуем перенести splitlines ниже\n",
+    "#lines = open('sentences.txt').read().lower().splitlines()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 127,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "ename": "TypeError",
+     "evalue": "expected string or bytes-like object",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[0;31mTypeError\u001b[0m                                 Traceback (most recent call last)",
+      "\u001b[0;32m<ipython-input-127-95cffb90fb6b>\u001b[0m in \u001b[0;36m<module>\u001b[0;34m()\u001b[0m\n\u001b[0;32m----> 1\u001b[0;31m \u001b[0mlines\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mre\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0msplit\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m'[^a-z]'\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mlines\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
+      "\u001b[0;32m//anaconda/lib/python3.5/re.py\u001b[0m in \u001b[0;36msplit\u001b[0;34m(pattern, string, maxsplit, flags)\u001b[0m\n\u001b[1;32m    201\u001b[0m     \u001b[0;32mand\u001b[0m \u001b[0mthe\u001b[0m \u001b[0mremainder\u001b[0m \u001b[0mof\u001b[0m \u001b[0mthe\u001b[0m \u001b[0mstring\u001b[0m \u001b[0;32mis\u001b[0m \u001b[0mreturned\u001b[0m \u001b[0;32mas\u001b[0m \u001b[0mthe\u001b[0m \u001b[0mfinal\u001b[0m \u001b[0melement\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    202\u001b[0m     of the list.\"\"\"\n\u001b[0;32m--> 203\u001b[0;31m     \u001b[0;32mreturn\u001b[0m \u001b[0m_compile\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mpattern\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mflags\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0msplit\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mstring\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mmaxsplit\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    204\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    205\u001b[0m \u001b[0;32mdef\u001b[0m \u001b[0mfindall\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mpattern\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mstring\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mflags\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;36m0\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;31mTypeError\u001b[0m: expected string or bytes-like object"
+     ]
+    }
+   ],
+   "source": [
+    "#lines = re.split('[^a-z]', lines)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 128,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "as cat simply catenates streams of bytes, it can be also used to concatenate binary files, where it will just concatenate sequence of bytes.\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(lines[1])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 427,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [],
+   "source": [
+    "\n",
+    "#words_in_line=lines[0].split()  \n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 129,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "['the' 'fifth' 'major' 'update' 'to' 'mac' 'os' 'x' 'leopard' 'contains'\n",
+      " 'such' 'a' 'mountain' 'of' 'features' 'more' 'than' '300' 'by' 'apples'\n",
+      " 'count']\n",
+      "type line_array <class 'numpy.ndarray'>\n"
+     ]
+    }
+   ],
+   "source": [
+    "line_array=np.array(words_in_line)\n",
+    "print(line_array)\n",
+    "print('type line_array',type(line_array))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 130,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "stroka= 0 words_in_line ['in', 'comparison', 'to', 'dogs,', 'cats', 'have', 'not', 'undergone', 'major', 'changes', 'during', 'the', 'domestication', 'process.']\n",
+      "stroka= 1 words_in_line ['as', 'cat', 'simply', 'catenates', 'streams', 'of', 'bytes,', 'it', 'can', 'be', 'also', 'used', 'to', 'concatenate', 'binary', 'files,', 'where', 'it', 'will', 'just', 'concatenate', 'sequence', 'of', 'bytes.']\n",
+      "stroka= 2 words_in_line ['a', 'common', 'interactive', 'use', 'of', 'cat', 'for', 'a', 'single', 'file', 'is', 'to', 'output', 'the', 'content', 'of', 'a', 'file', 'to', 'standard', 'output.']\n",
+      "stroka= 3 words_in_line ['cats', 'can', 'hear', 'sounds', 'too', 'faint', 'or', 'too', 'high', 'in', 'frequency', 'for', 'human', 'ears,', 'such', 'as', 'those', 'made', 'by', 'mice', 'and', 'other', 'small', 'animals.']\n",
+      "stroka= 4 words_in_line ['in', 'one,', 'people', 'deliberately', 'tamed', 'cats', 'in', 'a', 'process', 'of', 'artificial', 'selection,', 'as', 'they', 'were', 'useful', 'predators', 'of', 'vermin.']\n",
+      "stroka= 5 words_in_line ['the', 'domesticated', 'cat', 'and', 'its', 'closest', 'wild', 'ancestor', 'are', 'both', 'diploid', 'organisms', 'that', 'possess', '38', 'chromosomes', 'and', 'roughly', '20,000', 'genes.']\n",
+      "stroka= 6 words_in_line ['domestic', 'cats', 'are', 'similar', 'in', 'size', 'to', 'the', 'other', 'members', 'of', 'the', 'genus', 'felis,', 'typically', 'weighing', 'between', '4', 'and', '5', 'kg', '(8.8', 'and', '11.0', 'lb).']\n",
+      "stroka= 7 words_in_line ['however,', 'if', 'the', 'output', 'is', 'piped', 'or', 'redirected,', 'cat', 'is', 'unnecessary.']\n",
+      "stroka= 8 words_in_line ['cat', 'with', 'one', 'named', 'file', 'is', 'safer', 'where', 'human', 'error', 'is', 'a', 'concern', '-', 'one', 'wrong', 'use', 'of', 'the', 'default', 'redirection', 'symbol', '\">\"', 'instead', 'of', '\"<\"', '(often', 'adjacent', 'on', 'keyboards)', 'may', 'permanently', 'delete', 'the', 'file', 'you', 'were', 'just', 'needing', 'to', 'read.']\n",
+      "stroka= 9 words_in_line ['in', 'terms', 'of', 'legibility,', 'a', 'sequence', 'of', 'commands', 'starting', 'with', 'cat', 'and', 'connected', 'by', 'pipes', 'has', 'a', 'clear', 'left-to-right', 'flow', 'of', 'information.']\n",
+      "stroka= 10 words_in_line ['cat', 'command', 'is', 'one', 'of', 'the', 'basic', 'commands', 'that', 'you', 'learned', 'when', 'you', 'started', 'in', 'the', 'unix', '/', 'linux', 'world.']\n",
+      "stroka= 11 words_in_line ['using', 'cat', 'command,', 'the', 'lines', 'received', 'from', 'stdin', 'can', 'be', 'redirected', 'to', 'a', 'new', 'file', 'using', 'redirection', 'symbols.']\n",
+      "stroka= 12 words_in_line ['when', 'you', 'type', 'simply', 'cat', 'command', 'without', 'any', 'arguments,', 'it', 'just', 'receives', 'the', 'stdin', 'content', 'and', 'displays', 'it', 'in', 'the', 'stdout.']\n",
+      "stroka= 13 words_in_line ['leopard', 'was', 'released', 'on', 'october', '26,', '2007', 'as', 'the', 'successor', 'of', 'tiger', '(version', '10.4),', 'and', 'is', 'available', 'in', 'two', 'editions.']\n",
+      "stroka= 14 words_in_line ['according', 'to', 'apple,', 'leopard', 'contains', 'over', '300', 'changes', 'and', 'enhancements', 'over', 'its', 'predecessor,', 'mac', 'os', 'x', 'tiger.']\n",
+      "stroka= 15 words_in_line ['as', 'of', 'mid', '2010,', 'some', 'apple', 'computers', 'have', 'firmware', 'factory', 'installed', 'which', 'will', 'no', 'longer', 'allow', 'installation', 'of', 'mac', 'os', 'x', 'leopard.']\n",
+      "stroka= 16 words_in_line ['since', 'apple', 'moved', 'to', 'using', 'intel', 'processors', 'in', 'their', 'computers,', 'the', 'osx86', 'community', 'has', 'developed', 'and', 'now', 'also', 'allows', 'mac', 'os', 'x', 'tiger', 'and', 'later', 'releases', 'to', 'be', 'installed', 'on', 'non-apple', 'x86-based', 'computers.']\n",
+      "stroka= 17 words_in_line ['os', 'x', 'mountain', 'lion', 'was', 'released', 'on', 'july', '25,', '2012', 'for', 'purchase', 'and', 'download', 'through', \"apple's\", 'mac', 'app', 'store,', 'as', 'part', 'of', 'a', 'switch', 'to', 'releasing', 'os', 'x', 'versions', 'online', 'and', 'every', 'year.']\n",
+      "stroka= 18 words_in_line ['apple', 'has', 'released', 'a', 'small', 'patch', 'for', 'the', 'three', 'most', 'recent', 'versions', 'of', 'safari', 'running', 'on', 'os', 'x', 'yosemite,', 'mavericks,', 'and', 'mountain', 'lion.']\n",
+      "stroka= 19 words_in_line ['the', 'mountain', 'lion', 'release', 'marks', 'the', 'second', 'time', 'apple', 'has', 'offered', 'an', 'incremental', 'upgrade,', 'rather', 'than', 'releasing', 'a', 'new', 'cat', 'entirely.']\n",
+      "stroka= 20 words_in_line ['mac', 'os', 'x', 'mountain', 'lion', 'installs', 'in', 'place,', 'so', 'you', \"won't\", 'need', 'to', 'create', 'a', 'separate', 'disk', 'or', 'run', 'the', 'installation', 'off', 'an', 'external', 'drive.']\n",
+      "stroka= 21 words_in_line ['the', 'fifth', 'major', 'update', 'to', 'mac', 'os', 'x,', 'leopard,', 'contains', 'such', 'a', 'mountain', 'of', 'features', '-', 'more', 'than', '300', 'by', \"apple's\", 'count.']\n"
+     ]
+    }
+   ],
+   "source": [
+    "i=0 #iterate by lines\n",
+    "j=0\n",
+    "for i in range(number_sentences):\n",
+    "     words_in_line=lines[i].split()\n",
+    "   \n",
+    "     print('stroka=',i,'words_in_line',words_in_line)\n",
+    "     line_array=np.array(words_in_line)\n",
+    "     for j in range (254):\n",
+    "        matrix[i,j]=(line_array == voc[j]).sum() \n",
+    "       \n",
+    "        unique_word_count\n",
+    "     "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 131,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "matrix [[ 0.  1.  1. ...,  0.  0.  0.]\n",
+      " [ 0.  0.  1. ...,  0.  0.  0.]\n",
+      " [ 0.  0.  2. ...,  0.  0.  0.]\n",
+      " ..., \n",
+      " [ 0.  0.  0. ...,  0.  0.  0.]\n",
+      " [ 0.  0.  1. ...,  0.  0.  0.]\n",
+      " [ 0.  0.  1. ...,  1.  1.  1.]]\n",
+      "matrix_1 [ 0.  0.  1.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  1.  1.  1.  1.\n",
+      "  1.  2.  0.  2.  1.  1.  1.  1.  2.  1.  0.  1.  1.  1.  1.  0.  0.  0.\n",
+      "  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.\n",
+      "  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.\n",
+      "  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.\n",
+      "  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.\n",
+      "  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.\n",
+      "  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.\n",
+      "  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.\n",
+      "  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.\n",
+      "  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.\n",
+      "  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.\n",
+      "  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.\n",
+      "  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.\n",
+      "  0.  0.]\n"
+     ]
+    }
+   ],
+   "source": [
+    "print('matrix',matrix)\n",
+    "print('matrix_1',matrix[1,:])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 132,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [],
+   "source": [
+    "#print(index_array[3])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 133,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "voc[iter] comparison\n",
+      "index for matrix element iteration on zero line 2-words_in_line above for first element: 0\n",
+      "(0,1) элемент матрицы: 0.0\n",
+      "index_array 0\n",
+      "index_array shape (254,)\n"
+     ]
+    }
+   ],
+   "source": [
+    "iter=1\n",
+    "index_array=np.zeros(len(voc)) #альтернативно \n",
+    "\n",
+    "index_array_1=[0]*252  #пока прорабатываю со строкой, потом перевести в строки матрицы\n",
+    "index = (line_array == voc[iter]).sum()\n",
+    "matrix[0,iter]=index\n",
+    "print('voc[iter]', voc[iter])\n",
+    "print('index for matrix element iteration on zero line 2-words_in_line above for first element:',index)\n",
+    "print ('(0,1) элемент матрицы:',matrix[0,1])\n",
+    "print ('index_array',index_array_1[3])\n",
+    "print ('index_array shape',index_array.shape)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 134,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[ 0.  0.  1.  0.  0.  0.  0.  0.  1.  0.  0.  1.  0.  0.  0.  0.  0.  0.\n",
+      "  0.  1.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  1.  0.  0.\n",
+      "  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.\n",
+      "  1.  0.  0.  1.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.\n",
+      "  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.\n",
+      "  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.\n",
+      "  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.\n",
+      "  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.\n",
+      "  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.\n",
+      "  0.  0.  0.  0.  0.  0.  0.  0.  1.  0.  0.  0.  1.  1.  0.  0.  0.  0.\n",
+      "  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.\n",
+      "  0.  0.  0.  0.  1.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.\n",
+      "  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.\n",
+      "  0.  1.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  1.  1.\n",
+      "  1.  1.]\n"
+     ]
+    }
+   ],
+   "source": [
+    "j=0\n",
+    "for j in range (len(index_array)):\n",
+    "      index_array[j]=(line_array == voc[j]).sum()    \n",
+    "print(index_array)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 135,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "import string\n",
+    "punct = set(string.punctuation) # работающий алгоритм для строк"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 136,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "stroka= 0 words_in_line ['in', 'comparison', 'to', 'dogs', 'cats', 'have', 'not', 'undergone', 'major', 'changes', 'during', 'the', 'domestication', 'process']\n",
+      "stroka= 1 words_in_line ['as', 'cat', 'simply', 'catenates', 'streams', 'of', 'bytes', 'it', 'can', 'be', 'also', 'used', 'to', 'concatenate', 'binary', 'files', 'where', 'it', 'will', 'just', 'concatenate', 'sequence', 'of', 'bytes']\n",
+      "stroka= 2 words_in_line ['a', 'common', 'interactive', 'use', 'of', 'cat', 'for', 'a', 'single', 'file', 'is', 'to', 'output', 'the', 'content', 'of', 'a', 'file', 'to', 'standard', 'output']\n",
+      "stroka= 3 words_in_line ['cats', 'can', 'hear', 'sounds', 'too', 'faint', 'or', 'too', 'high', 'in', 'frequency', 'for', 'human', 'ears', 'such', 'as', 'those', 'made', 'by', 'mice', 'and', 'other', 'small', 'animals']\n",
+      "stroka= 4 words_in_line ['in', 'one', 'people', 'deliberately', 'tamed', 'cats', 'in', 'a', 'process', 'of', 'artificial', 'selection', 'as', 'they', 'were', 'useful', 'predators', 'of', 'vermin']\n",
+      "stroka= 5 words_in_line ['the', 'domesticated', 'cat', 'and', 'its', 'closest', 'wild', 'ancestor', 'are', 'both', 'diploid', 'organisms', 'that', 'possess', '38', 'chromosomes', 'and', 'roughly', '20000', 'genes']\n",
+      "stroka= 6 words_in_line ['domestic', 'cats', 'are', 'similar', 'in', 'size', 'to', 'the', 'other', 'members', 'of', 'the', 'genus', 'felis', 'typically', 'weighing', 'between', '4', 'and', '5', 'kg', '88', 'and', '110', 'lb']\n",
+      "stroka= 7 words_in_line ['however', 'if', 'the', 'output', 'is', 'piped', 'or', 'redirected', 'cat', 'is', 'unnecessary']\n",
+      "stroka= 8 words_in_line ['cat', 'with', 'one', 'named', 'file', 'is', 'safer', 'where', 'human', 'error', 'is', 'a', 'concern', 'one', 'wrong', 'use', 'of', 'the', 'default', 'redirection', 'symbol', 'instead', 'of', 'often', 'adjacent', 'on', 'keyboards', 'may', 'permanently', 'delete', 'the', 'file', 'you', 'were', 'just', 'needing', 'to', 'read']\n",
+      "stroka= 9 words_in_line ['in', 'terms', 'of', 'legibility', 'a', 'sequence', 'of', 'commands', 'starting', 'with', 'cat', 'and', 'connected', 'by', 'pipes', 'has', 'a', 'clear', 'lefttoright', 'flow', 'of', 'information']\n",
+      "stroka= 10 words_in_line ['cat', 'command', 'is', 'one', 'of', 'the', 'basic', 'commands', 'that', 'you', 'learned', 'when', 'you', 'started', 'in', 'the', 'unix', 'linux', 'world']\n",
+      "stroka= 11 words_in_line ['using', 'cat', 'command', 'the', 'lines', 'received', 'from', 'stdin', 'can', 'be', 'redirected', 'to', 'a', 'new', 'file', 'using', 'redirection', 'symbols']\n",
+      "stroka= 12 words_in_line ['when', 'you', 'type', 'simply', 'cat', 'command', 'without', 'any', 'arguments', 'it', 'just', 'receives', 'the', 'stdin', 'content', 'and', 'displays', 'it', 'in', 'the', 'stdout']\n",
+      "stroka= 13 words_in_line ['leopard', 'was', 'released', 'on', 'october', '26', '2007', 'as', 'the', 'successor', 'of', 'tiger', 'version', '104', 'and', 'is', 'available', 'in', 'two', 'editions']\n",
+      "stroka= 14 words_in_line ['according', 'to', 'apple', 'leopard', 'contains', 'over', '300', 'changes', 'and', 'enhancements', 'over', 'its', 'predecessor', 'mac', 'os', 'x', 'tiger']\n",
+      "stroka= 15 words_in_line ['as', 'of', 'mid', '2010', 'some', 'apple', 'computers', 'have', 'firmware', 'factory', 'installed', 'which', 'will', 'no', 'longer', 'allow', 'installation', 'of', 'mac', 'os', 'x', 'leopard']\n",
+      "stroka= 16 words_in_line ['since', 'apple', 'moved', 'to', 'using', 'intel', 'processors', 'in', 'their', 'computers', 'the', 'osx86', 'community', 'has', 'developed', 'and', 'now', 'also', 'allows', 'mac', 'os', 'x', 'tiger', 'and', 'later', 'releases', 'to', 'be', 'installed', 'on', 'nonapple', 'x86based', 'computers']\n",
+      "stroka= 17 words_in_line ['os', 'x', 'mountain', 'lion', 'was', 'released', 'on', 'july', '25', '2012', 'for', 'purchase', 'and', 'download', 'through', 'apples', 'mac', 'app', 'store', 'as', 'part', 'of', 'a', 'switch', 'to', 'releasing', 'os', 'x', 'versions', 'online', 'and', 'every', 'year']\n",
+      "stroka= 18 words_in_line ['apple', 'has', 'released', 'a', 'small', 'patch', 'for', 'the', 'three', 'most', 'recent', 'versions', 'of', 'safari', 'running', 'on', 'os', 'x', 'yosemite', 'mavericks', 'and', 'mountain', 'lion']\n",
+      "stroka= 19 words_in_line ['the', 'mountain', 'lion', 'release', 'marks', 'the', 'second', 'time', 'apple', 'has', 'offered', 'an', 'incremental', 'upgrade', 'rather', 'than', 'releasing', 'a', 'new', 'cat', 'entirely']\n",
+      "stroka= 20 words_in_line ['mac', 'os', 'x', 'mountain', 'lion', 'installs', 'in', 'place', 'so', 'you', 'wont', 'need', 'to', 'create', 'a', 'separate', 'disk', 'or', 'run', 'the', 'installation', 'off', 'an', 'external', 'drive']\n",
+      "stroka= 21 words_in_line ['the', 'fifth', 'major', 'update', 'to', 'mac', 'os', 'x', 'leopard', 'contains', 'such', 'a', 'mountain', 'of', 'features', 'more', 'than', '300', 'by', 'apples', 'count']\n"
+     ]
+    }
+   ],
+   "source": [
+    "i=0 #iterate by lines\n",
+    "j=0\n",
+    "for i in range(number_sentences):\n",
+    "     lines[i]=''.join(x for x in lines[i] if x not in punct)\n",
+    "     words_in_line=lines[i].split()\n",
+    "   \n",
+    "     print('stroka=',i,'words_in_line',words_in_line)\n",
+    "     line_array=np.array(words_in_line)\n",
+    "     for j in range (unique_word_count):\n",
+    "        matrix[i,j]=(line_array == voc[j]).sum() \n",
+    "       \n",
+    "        unique_word_count\n",
+    "     "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 137,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "import scipy.spatial.distance as dist"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 138,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[ 0.  1.  1.  1.  1.  1.  1.  1.  1.  1.  1.  1.  1.  1.  0.  0.  0.  0.\n",
+      "  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.\n",
+      "  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  1.  0.  0.  0.\n",
+      "  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.\n",
+      "  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.\n",
+      "  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.\n",
+      "  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.\n",
+      "  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.\n",
+      "  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.\n",
+      "  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.\n",
+      "  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.\n",
+      "  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.\n",
+      "  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.\n",
+      "  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.\n",
+      "  0.  0.]\n"
+     ]
+    }
+   ],
+   "source": [
+    "b=matrix[0,:]  #returns the first raw\n",
+    "print(b)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 139,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "0.952754440874\n"
+     ]
+    }
+   ],
+   "source": [
+    "sentences_closest_sense = dist.cosine(matrix[1,:],b)\n",
+    "print(sentences_closest_sense)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 152,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "stroka= 0 dist 0.0\n",
+      "stroka= 1 dist 0.952754440874\n",
+      "stroka= 2 dist 0.864473814564\n",
+      "stroka= 3 dist 0.895171516328\n",
+      "stroka= 4 dist 0.77708871497\n",
+      "stroka= 5 dist 0.940238569533\n",
+      "stroka= 6 dist 0.732738758088\n",
+      "stroka= 7 dist 0.925875068334\n",
+      "stroka= 8 dist 0.884272487528\n",
+      "stroka= 9 dist 0.950370833301\n",
+      "stroka= 10 dist 0.832816536227\n",
+      "stroka= 11 dist 0.880477139067\n",
+      "stroka= 12 dist 0.839643254853\n",
+      "stroka= 13 dist 0.87035925529\n",
+      "stroka= 14 dist 0.87401184233\n",
+      "stroka= 15 dist 0.944272178742\n",
+      "stroka= 16 dist 0.821825838725\n",
+      "stroka= 17 dist 0.955456459681\n",
+      "stroka= 18 dist 0.944272178742\n",
+      "stroka= 19 dist 0.888544357485\n",
+      "stroka= 20 dist 0.836336582323\n",
+      "stroka= 21 dist 0.816058198155\n"
+     ]
+    }
+   ],
+   "source": [
+    "iter=0\n",
+    "for iter in range(number_sentences):\n",
+    "      sentences_closest_sense = dist.cosine(matrix[iter,:],b)\n",
+    "      print('stroka=',iter,'dist',sentences_closest_sense)\n",
+    "       "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "6Найдите косинусное расстояние от предложения в самой первой строке (In comparison to dogs, cats have not undergone...) до всех остальных с помощью функции scipy.spatial.distance.cosine. Какие номера у двух предложений, ближайших к нему по этому расстоянию (строки нумеруются с нуля)? Эти два числа и будут ответами на задание."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "7Запишите полученные числа в файл, разделив пробелом. Обратите внимание, что файл должен состоять из одной строки, в конце которой не должно быть переноса. Пример файла с решением вы можете найти в конце задания (submission-1.txt)."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "8 Совпадают ли ближайшие два предложения по тематике с первым? Совпадают ли тематики у следующих по близости предложений?"
+   ]
+  }
+ ],
+ "metadata": {
+  "anaconda-cloud": {},
+  "kernelspec": {
+   "display_name": "Python [Root]",
+   "language": "python",
+   "name": "Python [Root]"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.5.2"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 0
+}
